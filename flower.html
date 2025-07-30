@@ -61,6 +61,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 let width, height;
+
 function resize() {
   width = canvas.width = window.innerWidth;
   height = canvas.height = window.innerHeight;
@@ -206,17 +207,65 @@ class Butterfly {
 for (let i = 0; i < 30; i++) petals.push(new Petal());
 for (let i = 0; i < 5; i++) butterflies.push(new Butterfly());
 
+// Track mouse for hover detection on letter box
+let mouseX = 0;
+let mouseY = 0;
+let isHoveringLetter = false;
+
+canvas.addEventListener("mousemove", e => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+  const dx = mouseX - letter.x;
+  const dy = mouseY - letter.y;
+  isHoveringLetter = Math.abs(dx) < 80 && Math.abs(dy) < 50;
+});
+
 function drawLetter() {
   ctx.save();
   ctx.translate(letter.x, letter.y + Math.sin(performance.now() * 0.002) * 5);
   ctx.scale(letter.scale + Math.sin(letter.pulse) * 0.02, letter.scale + Math.sin(letter.pulse) * 0.02);
-  ctx.fillStyle = "#fff5f5";
-  ctx.strokeStyle = "#ff99aa";
+
+  if (isHoveringLetter) {
+    ctx.fillStyle = "#ff6688";  // brighter fill on hover
+    ctx.strokeStyle = "#ff3366"; // brighter border on hover
+  } else {
+    ctx.fillStyle = "#fff5f5";
+    ctx.strokeStyle = "#ff99aa";
+  }
+
   ctx.lineWidth = 2;
   ctx.beginPath();
+  // roundRect polyfill
+  if (!ctx.roundRect) {
+    ctx.roundRect = function(x, y, w, h, r) {
+      if (typeof r === "number") {
+        r = {tl: r, tr: r, br: r, bl: r};
+      } else {
+        var defaultRadius = {tl:0, tr:0, br:0, bl:0};
+        for (var side in defaultRadius) {
+          r[side] = r[side] || defaultRadius[side];
+        }
+      }
+      this.beginPath();
+      this.moveTo(x + r.tl, y);
+      this.lineTo(x + w - r.tr, y);
+      this.quadraticCurveTo(x + w, y, x + w, y + r.tr);
+      this.lineTo(x + w, y + h - r.br);
+      this.quadraticCurveTo(x + w, y + h, x + w - r.br, y + h);
+      this.lineTo(x + r.bl, y + h);
+      this.quadraticCurveTo(x, y + h, x, y + h - r.bl);
+      this.lineTo(x, y + r.tl);
+      this.quadraticCurveTo(x, y, x + r.tl, y);
+      this.closePath();
+      return this;
+    }
+  }
+
   ctx.roundRect(-80, -50, 160, 100, 12);
   ctx.fill();
   ctx.stroke();
+
   ctx.fillStyle = "#ff6688";
   ctx.font = "bold 18px Segoe UI";
   ctx.textAlign = "center";
@@ -224,6 +273,7 @@ function drawLetter() {
   ctx.font = "16px Segoe UI";
   ctx.fillText("To Our Garden", 0, 10);
   ctx.fillText("🌷", 0, 30);
+
   ctx.restore();
 }
 
@@ -243,6 +293,7 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
+// Click event on letter box
 canvas.addEventListener("click", e => {
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left;
