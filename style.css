@@ -130,7 +130,7 @@ body {
   transform: translate(-50%, -100%);
   width: 8vmin;
   height: 8vmin;
-  background-color: pink;
+  background-color: red;
   filter: blur(10vmin);
 }
 .flower__leaf {
@@ -141,7 +141,7 @@ body {
   height: 11vmin;
   border-radius: 51% 49% 47% 53%/44% 45% 55% 69%;
   background-color: #a7ffee;
-  background-image: linear-gradient(to top, #e04cb4, #e883ef);
+  background-image: linear-gradient(to top, #de2e2e, #ed5e5e);
   transform-origin: bottom center;
   opacity: 0.9;
   box-shadow: inset 0 0 2vmin rgba(255, 255, 255, 0.5);
@@ -161,7 +161,7 @@ body {
   transform-origin: bottom left;
   border-radius: 4vmin 10vmin 4vmin 4vmin;
   transform: translate(0%, 18%) rotateX(70deg) rotate(-43deg);
-  background-image: linear-gradient(to top, #e04cb4, #e883ef);
+  background-image: linear-gradient(to top, #de2e2e, #ed5e5e);
   z-index: 1;
   opacity: 0.8;
 }
@@ -202,7 +202,7 @@ body {
   height: var(--h);
   border-top-right-radius: var(--h);
   border-bottom-left-radius: var(--h);
-  background-image: linear-gradient(to top, rgba(20, 117, 122, 0.4), #39c6d6);
+  background-image: linear-gradient(to top, rgba(20, 122, 57, 0.4), #39c6d6);
 }
 .flower__line__leaf--1 {
   transform: rotate(70deg) rotateY(30deg);
@@ -986,3 +986,38 @@ body {
 }
 
 /*# sourceMappingURL=style.css.map */
+/* Example flower hover color change */
+.flower:hover .flower__leaf {
+  background-color: #ff69b4; /* Bright pink on hover */
+  transition: background-color 0.3s ease;
+}
+
+.flower:hover .flower__white-circle {
+  background-color: #fffacd; /* Light yellow */
+}
+
+.flower:hover .flower__light {
+  background-color: #ffd700; /* Gold */
+}
+
+.flower:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+  filter: brightness(1.2);
+}
+
+.flower--1:hover .flower__leaf {
+  background-color: #e91e63;
+}
+.flower--2:hover .flower__leaf {
+  background-color: #2196f3;
+}
+.flower--3:hover .flower__leaf {
+  background-color: #4caf50;
+}
+
+.flower:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+  filter: brightness(1.2);
+}
